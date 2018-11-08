@@ -4,8 +4,8 @@
 
 enum class CipherMode
 {
-  encrypt,
-  decrypt
+  Encrypt,
+  Decrypt
 };
 
 

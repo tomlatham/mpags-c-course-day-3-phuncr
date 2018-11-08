@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
   const std::vector<std::string> cmdLineArgs {argv, argv+argc};
 
   // Options that might be set by the command-line arguments
-  ProgramSettings CLArgs{false, false, "", "", "", true};
+  ProgramSettings CLArgs{false, false, "", "", "", CipherMode::Encrypt};
 
   // Process command line arguments
   bool cmdLineStatus { processCommandLine(cmdLineArgs, CLArgs) };
@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 
   // Handle version, if requested
   if (CLArgs.versionRequested) {
-    std::cout << "0.2.0" << std::endl;
+    std::cout << "0.3.0" << std::endl;
     // Like help, requires no further action, so return from main,
     // with 0 used to indicate success
     return 0;
@@ -89,28 +89,9 @@ int main(int argc, char* argv[])
     }
   }
 
-  // We have the key as a string, but the Caesar cipher needs an unsigned long, so we first need to convert it
-  // We default to having a key of 0, i.e. no encryption, if no key was provided on the command line
-//  size_t caesar_key {0};
- 
-
-
-    CaesarCipher CaesarClass {CLArgs.cipher_key};
-    //std::cout << CaesarClass.key_ << std::endl;
-  
-
   // Run the Caesar cipher (using the specified key and encrypt/decrypt flag) on the input text
-//  std::string outputText { runCaesarCipher( inputText, caesar_key, 
-//CLArgs.encrypt ) };
-
-  CipherMode Mode {CipherMode::encrypt};
-
-  if(!CLArgs.encrypt)
-{
-  Mode = CipherMode::decrypt;
-}
-
-  std::string outputText { CaesarClass.applyCipher( inputText, Mode) };
+  CaesarCipher caesarCipher {CLArgs.cipher_key};
+  std::string outputText { caesarCipher.applyCipher( inputText, CLArgs.mode ) };
 
   // Output the transliterated text
   if (!CLArgs.outputFile.empty()) {
@@ -118,8 +99,7 @@ int main(int argc, char* argv[])
     // Open the file and check that we can write to it
     std::ofstream outputStream(CLArgs.outputFile);
     if (!outputStream.good()) {
-      std::cerr << "[error] failed to create ostream on file '" << 
-CLArgs.outputFile << "'" << std::endl;
+      std::cerr << "[error] failed to create ostream on file '" << CLArgs.outputFile << "'" << std::endl;
       return 1;
     }
 

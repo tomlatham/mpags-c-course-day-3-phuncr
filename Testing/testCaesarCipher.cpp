@@ -8,20 +8,20 @@
 TEST_CASE("encrypt", "[cipher]")
 {
     size_t cipher_key{5};
-    CaesarCipher CaesarClass {cipher_key};
-    CipherMode Mode {CipherMode::encrypt};
+    CaesarCipher caesarCipher {cipher_key};
+    CipherMode mode {CipherMode::Encrypt};
     std::string inputText {"HELLOWORLD"}; 
-    std::string outputText { CaesarClass.applyCipher( inputText, Mode) };
+    std::string outputText { caesarCipher.applyCipher( inputText, mode) };
     REQUIRE( outputText == "MJQQTBTWQI"); 
 }
 
 TEST_CASE("decrypt", "[cipher]")
 {
     size_t cipher_key{5};
-    CaesarCipher CaesarClass {cipher_key};
-    CipherMode Mode {CipherMode::decrypt};
+    CaesarCipher caesarCipher {cipher_key};
+    CipherMode mode {CipherMode::Decrypt};
     std::string inputText {"MJQQTBTWQI"}; 
-    std::string outputText { CaesarClass.applyCipher( inputText, Mode) };
+    std::string outputText { caesarCipher.applyCipher( inputText, mode) };
     REQUIRE( outputText == "HELLOWORLD"); 
 }
 
